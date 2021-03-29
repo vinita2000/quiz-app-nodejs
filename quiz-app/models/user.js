@@ -1,0 +1,49 @@
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcrypt = require('bcrypt');
+
+const userSchema = new mongoose.Schema({
+   name:String,
+   email: {
+      type: String,
+      required: [true, 'Email required'],
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validator: [validator.isEmail, 'Invalid email']
+   },
+   password: {
+      type: String,
+      required: [true, 'Password required'],
+      trim: true,
+      minlength: 7,
+      validate(value) {
+          if (value.toLowerCase().includes('password')) {
+              throw new Error('Password must not contain "Password"');
+          }
+      }
+   },
+   token: {
+      type: String,
+      // required: [true, 'Token required']
+  },
+  attemptedQuiz: [String], // quiz ID
+  addedQuestions: [String], // question ID
+  addedQuiz: [String], // quiz ID
+  correctResponse: {
+     type: Number,
+     default: 0
+  }
+});
+
+userSchema.pre('save', async function (next) {
+   this.password = await bcrypt.hash(this.password, 8);
+   next();
+});
+
+userSchema.methods.matchPassword = async function(password, encryptedPass){
+   return await bcrypt.compare(password, encryptedPass);
+};
+
+const User = mongoose.model('user', userSchema);
+module.exports = User;
