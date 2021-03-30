@@ -6,6 +6,7 @@ const {
     deleteCategoryQuestionsDB,
     listCategoryQuestionsDB,
     updateCategoryDB,
+    listCategoryQuizzesDB
 } = require('../dbServices/category');
 
 exports.createCategory = async(req, res) => {
@@ -56,7 +57,7 @@ exports.deleteCategory = async (req, res) => {
 
 exports.listCategoryQuestions = async (req, res) => {
     try{
-        const categoryID = req.body.categoryID;
+        const categoryID = req.params.categoryID;
         const isValidCat = await isValidCategory(categoryID);
         if (! isValidCat){
             throw new Error('Invalid Category');
@@ -64,6 +65,7 @@ exports.listCategoryQuestions = async (req, res) => {
         const categoryQues = await listCategoryQuestionsDB(categoryID);
         res.status(201).json({
             message: 'Category Questions',
+            count: categoryQues.length,
             data: categoryQues
         });
     }catch(e){
@@ -86,6 +88,22 @@ exports.updateCategory = async (req, res) => {
         });
     }catch(e){
         res.status(501).json({
+            message: e.message
+        });
+    }
+};
+
+exports.listCategoryQuizzes = async (req, res) => {
+    try{
+        const categoryID = req.params.categoryID;
+        const quizzes = await listCategoryQuizzesDB(categoryID);
+        res.status(200).json({
+            message: 'Quizzes',
+            count: quizzes.length,
+            data: quizzes
+        });
+    }catch(e){
+        res.status(500).json({
             message: e.message
         });
     }

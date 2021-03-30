@@ -1,5 +1,6 @@
 const Category = require('../models/category');
 const Question = require('../models/question');
+const Quiz = require('../models/quiz');
 
 exports.createCategoryDB = async (data) => {
     try{
@@ -68,3 +69,11 @@ exports.updateCategoryDB = async (data) => {
     }
 };
 
+exports.listCategoryQuizzesDB = async (_id) => {
+    try{
+        const quizzes = await Quiz.find({categories: {"$in": [_id]}});
+        return quizzes;
+    }catch(e){
+        throw new Error(e);
+    }
+};

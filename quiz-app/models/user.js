@@ -27,13 +27,10 @@ const userSchema = new mongoose.Schema({
       type: String,
       // required: [true, 'Token required']
   },
-  attemptedQuiz: [String], // quiz ID
-  addedQuestions: [String], // question ID
-  addedQuiz: [String], // quiz ID
-  correctResponse: {
-     type: Number,
-     default: 0
-  }
+  updatedAt: {
+   type: Date,
+   default: Date.now()
+ }
 });
 
 userSchema.pre('save', async function (next) {

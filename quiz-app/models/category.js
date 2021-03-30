@@ -6,6 +6,10 @@ const categorySchema = new mongoose.Schema({
       required: true,
       unique: true,
       trim: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now()
   }
 });
 

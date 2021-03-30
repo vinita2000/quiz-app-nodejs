@@ -42,6 +42,10 @@ const questionSchema = new mongoose.Schema({
     userID: {
         type: String,
         required: [true, 'User ID required']
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 });
 

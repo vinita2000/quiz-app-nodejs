@@ -10,6 +10,7 @@ const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
 const questionRoutes = require('./routes/question');
 const quizRoutes = require('./routes/quiz');
+const responseRoutes = require('./routes/response');
 
 var app = express();
 
@@ -22,5 +23,6 @@ app.use(userRoutes);
 app.use(categoryRoutes);
 app.use(questionRoutes);
 app.use(quizRoutes);
+app.use(responseRoutes);
 
 module.exports = app;
